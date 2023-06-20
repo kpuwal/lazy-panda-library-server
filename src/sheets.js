@@ -2,10 +2,8 @@ require('dotenv').config();
 const { google } = require('googleapis');
 const { cleanPickerData } = require('./helper.js');
 
-
 const SHEET_ID = process.env.GOOGLE_API_SHEET_ID;
 const PICKER_SHEET_ID = process.env.GOOGLE_API_PICKER_SHEET_ID;
-const API_KEY = process.env.GOOGLE_API_KEY;
 
 const writeLibrary = async (_req, res) => {
   try {
@@ -49,7 +47,6 @@ const writeLibrary = async (_req, res) => {
 }
 
 const readLibrary = async (_req, res) => {
-  console.log('read library')
   try {
     const { sheets } = await authentication();
     const response = await sheets.spreadsheets.values.get({
@@ -64,7 +61,6 @@ const readLibrary = async (_req, res) => {
 }
 
 const readPicker = async (_req, res) => {
-  console.log('is it here???')
   try {
     const { sheets } = await authentication();
     console.log('sheets: ')
@@ -74,7 +70,7 @@ const readPicker = async (_req, res) => {
       majorDimension: 'COLUMNS'
 
     })
-    console.log(response.data)
+    
     const cleanedData = cleanPickerData(response.data);
     return res.send(cleanedData);
   } catch (err) {
