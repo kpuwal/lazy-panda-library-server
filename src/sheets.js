@@ -55,27 +55,24 @@ const readLibrary = async (_req, res) => {
     })
     return res.send(response.data);
   } catch (err) {
-    // return res.status(500).send(err);
-    console.log("error: ", err)
+    return res.status(500).send(err);
   }
 }
 
 const readPicker = async (_req, res) => {
   try {
     const { sheets } = await authentication();
-    console.log('sheets: ')
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: PICKER_SHEET_ID,
       range: 'Output',
       majorDimension: 'COLUMNS'
 
     })
-    
+
     const cleanedData = cleanPickerData(response.data);
     return res.send(cleanedData);
   } catch (err) {
-    // return res.status(500).send(err);
-    console.log("error: ", err)
+    return res.status(500).send(err);
   }
 }
 
