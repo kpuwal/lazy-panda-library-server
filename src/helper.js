@@ -1,9 +1,27 @@
+function lowerCaseAllWordsExceptFirstLetters(string) {
+  return string.replace(/\S*/g, function (word) {
+      return word.charAt(0) + word.slice(1).toLowerCase();
+  });
+}
+
+const createPickerCategory = (items) => {
+  return items.map((el)  => 
+    {
+      return {
+        label: el,
+        value: el
+      }
+    }
+  )
+}
+
 const cleanData = (data) => {
+  let cleanObj = {}
   if (data.totalItems !== 0) {
     const bookInfo = data.items[0].volumeInfo;
     const bookSubtitle = bookInfo.subtitle === undefined ? "" : bookInfo.subtitle;
 
-    return {
+    cleanObj = {
       isFound: true,
       title: lowerCaseAllWordsExceptFirstLetters(bookInfo.title + '. ' + bookSubtitle),
       author: lowerCaseAllWordsExceptFirstLetters(bookInfo.authors.join(', ')),
@@ -12,8 +30,9 @@ const cleanData = (data) => {
       pageCount: bookInfo.pageCount,
     };
   } else {
-    return { isFound: false };
+    cleanObj = { isFound: false };
   }
+  return cleanObj
 }
 
 const cleanPickerData = (data) => {
@@ -28,23 +47,6 @@ const cleanPickerData = (data) => {
     world: createPickerCategory(shiftedValues[2]),
     readBy: createPickerCategory(shiftedValues[3]),
   };
-}
-
-const createPickerCategory = (items) => {
-  return items.map((el)  => 
-    {
-      return {
-        label: el,
-        value: el
-      }
-    }
-  )
-}
-
-function lowerCaseAllWordsExceptFirstLetters(string) {
-  return string.replace(/\S*/g, function (word) {
-      return word.charAt(0) + word.slice(1).toLowerCase();
-  });
 }
 
 module.exports = {

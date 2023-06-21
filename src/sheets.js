@@ -67,8 +67,7 @@ const readPicker = async (_req, res) => {
       range: 'Output',
       majorDimension: 'COLUMNS'
 
-    })
-
+    });
     const cleanedData = cleanPickerData(response.data);
     return res.send(cleanedData);
   } catch (err) {
