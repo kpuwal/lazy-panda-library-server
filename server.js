@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (_req, res) => {
-  return res.send("App is Running running running...");
+  return res.status(200).send("Server is running.");
 });
 
 app.use('/',  appRouter);
