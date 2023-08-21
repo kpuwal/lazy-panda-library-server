@@ -49,18 +49,37 @@ const cleanPickerData = (data) => {
   };
 }
 
+
+const templateKeys = [
+  'title',
+  'subtitle',
+  'author',
+  'language',
+  'publishedDate',
+  'pageCount',
+  'genre',
+  'series',
+  'world',
+  'readBy',
+  'boughtGivenOn',
+  'givenBy',
+  'lastReadByJowie',
+  'lastReadByKasia',
+  'isFound',
+  'isLoaded'
+];
+
 const cleanLibraryData = (data) => {
   const apiData = data.values;
-  const headers = apiData[0].map(header => header.trim());
-  const transformedData = apiData.slice(1).map(bookData => {
-    const bookObject = {};
-    headers.forEach((header, index) => {
-      bookObject[header] = bookData[index] !== undefined ? bookData[index] : ' ';
+  const dataArray = apiData.slice(1);
+  const mappedObjects = dataArray.map(dataArrayItem => {
+    const mappedObject = {};
+    templateKeys.forEach((key, index) => {
+      mappedObject[key] = dataArrayItem[index] || '';
     });
-    return bookObject;
+    return mappedObject;
   });
-
-  return transformedData
+  return mappedObjects;
 }
 
 module.exports = {
