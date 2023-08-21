@@ -49,7 +49,22 @@ const cleanPickerData = (data) => {
   };
 }
 
+const cleanLibraryData = (data) => {
+  const apiData = data.values;
+  const headers = apiData[0].map(header => header.trim());
+  const transformedData = apiData.slice(1).map(bookData => {
+    const bookObject = {};
+    headers.forEach((header, index) => {
+      bookObject[header] = bookData[index] !== undefined ? bookData[index] : ' ';
+    });
+    return bookObject;
+  });
+
+  return transformedData
+}
+
 module.exports = {
   cleanData,
-  cleanPickerData
+  cleanPickerData,
+  cleanLibraryData
 }

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { google } = require('googleapis');
-const { cleanPickerData } = require('./helper.js');
+const { cleanPickerData, cleanLibraryData } = require('./helper.js');
 
 const SHEET_ID = process.env.GOOGLE_API_SHEET_ID;
 const PICKER_SHEET_ID = process.env.GOOGLE_API_PICKER_SHEET_ID;
@@ -53,7 +53,8 @@ const readLibrary = async (_req, res) => {
       spreadsheetId: SHEET_ID,
       range: 'LibraryCatalogue',
     })
-    return res.send(response.data);
+    const cleanedData = cleanLibraryData(response.data)
+    return res.send(cleanedData);
   } catch (err) {
     return res.status(500).send(err);
   }
