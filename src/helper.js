@@ -52,7 +52,6 @@ const cleanPickerData = (data) => {
 
 const templateKeys = [
   'title',
-  'subtitle',
   'author',
   'language',
   'publishedDate',
@@ -64,9 +63,7 @@ const templateKeys = [
   'boughtGivenOn',
   'givenBy',
   'lastReadByJowie',
-  'lastReadByKasia',
-  'isFound',
-  'isLoaded'
+  'lastReadByKasia'
 ];
 
 const cleanLibraryData = (data) => {
