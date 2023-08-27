@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { google } = require('googleapis');
-const { cleanPickerData, cleanLibraryData } = require('./helper.js');
+const { cleanPickerData, cleanLibraryData, findRowIndexByTitle } = require('./helper.js');
 
 const SHEET_ID = process.env.GOOGLE_API_SHEET_ID;
 const PICKER_SHEET_ID = process.env.GOOGLE_API_PICKER_SHEET_ID;
@@ -40,6 +40,53 @@ const writeLibrary = async (_req, res) => {
       return res.json({msg: 'Spreadsheet updated successfully!'})
     }
     return res.json({msg: 'Something went wrong while updating the spreadsheet'})
+  } catch (err) {
+    console.log('ERROR UPDATING THE SHEET: ', err);
+    res.status(500).send(err);
+  }
+}
+
+const updateLibrary = async(_req, res) => {
+  try {
+    const {
+      title,
+      author,
+      language,
+      publishedDate,
+      pageCount,
+      genre,
+      series,
+      world,
+      readBy,
+      boughtGivenOn,
+      givenBy,
+      lastReadByJowie,
+      lastReadByKasia,
+    } = _req.body;
+
+    const { sheets } = await authentication();
+    const rowIndex = await findRowIndexByTitle(sheets, SHEET_ID,  title);
+    console.log('row index: ', rowIndex)
+
+    if (rowIndex !== -1) {
+      const updatedRowData = [ title, author, language, publishedDate, pageCount, genre, series, world, readBy, boughtGivenOn, givenBy, lastReadByJowie, lastReadByKasia ];
+
+      const writeReq = await sheets.spreadsheets.values.update({
+        spreadsheetId: SHEET_ID,
+        range: `LibraryCatalogue!A${rowIndex + 1}:M${rowIndex + 1}`,
+        valueInputOption: 'USER_ENTERED',
+        resource: {
+          values: [updatedRowData],
+        },
+      });
+
+      if (writeReq.status === 200) {
+        console.log('Row updated successfully!');
+        return res.json({ msg: 'Spreadsheet row updated successfully!' });
+      }
+    }
+    return res.json({ msg: 'Row not found or something went wrong while updating the spreadsheet' });
+
   } catch (err) {
     console.log('ERROR UPDATING THE SHEET: ', err);
     res.status(500).send(err);
@@ -93,5 +140,6 @@ const authentication = async () => {
 module.exports = {
   writeLibrary,
   readLibrary,
+  updateLibrary,
   readPicker
 }
