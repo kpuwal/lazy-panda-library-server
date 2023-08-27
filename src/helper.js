@@ -79,8 +79,21 @@ const cleanLibraryData = (data) => {
   return mappedObjects;
 }
 
+async function findRowIndexByTitle(sheets, sheetId, title) {
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: 'LibraryCatalogue!A:A',
+  });
+
+  const titles = response.data.values;
+  const rowIndex = titles.findIndex(row => row[0] === title);
+
+  return rowIndex;
+}
+
 module.exports = {
   cleanData,
   cleanPickerData,
-  cleanLibraryData
+  cleanLibraryData,
+  findRowIndexByTitle
 }
