@@ -66,7 +66,6 @@ const updateLibrary = async(_req, res) => {
 
     const { sheets } = await authentication();
     const rowIndex = await findRowIndexByTitle(sheets, SHEET_ID,  title);
-    console.log('row index: ', rowIndex)
 
     if (rowIndex !== -1) {
       const updatedRowData = [ title, author, language, publishedDate, pageCount, genre, series, world, readBy, boughtGivenOn, givenBy, lastReadByJowie, lastReadByKasia ];
@@ -81,7 +80,6 @@ const updateLibrary = async(_req, res) => {
       });
 
       if (writeReq.status === 200) {
-        console.log('Row updated successfully!');
         return res.json({ msg: 'Spreadsheet row updated successfully!' });
       }
     }
