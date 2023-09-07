@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { google } = require('googleapis');
-const { cleanPickerData, cleanLibraryData, findRowIndexByTitle } = require('./helper.js');
+const { cleanPickerData, cleanLibraryData, findRowIndexByTitle, filterLibraryData } = require('./helper.js');
 
 const SHEET_ID = process.env.GOOGLE_API_SHEET_ID;
 const PICKER_SHEET_ID = process.env.GOOGLE_API_PICKER_SHEET_ID;
@@ -31,7 +31,7 @@ const writeLibrary = async (_req, res) => {
       insertDataOption: 'INSERT_ROWS',
       resource: {
         values: [
-          [ title, author, language, publishedDate, pageCount, genre, series, world, readBy, boughtGivenOn, givenBy, lastReadByJowie, lastReadByKasia ]
+          [title, author, language, publishedDate, pageCount, genre, series, world, readBy, boughtGivenOn, givenBy, lastReadByJowie, lastReadByKasia]
         ]
       }
     })
@@ -39,10 +39,11 @@ const writeLibrary = async (_req, res) => {
     if (writeReq.status === 200) {
       return res.json({msg: 'Spreadsheet updated successfully!'})
     }
+
     return res.json({msg: 'Something went wrong while updating the spreadsheet'})
   } catch (err) {
     console.log('ERROR UPDATING THE SHEET: ', err);
-    res.status(500).send(err);
+    res.status(500).json({ error: 'Something went wrong while updating the spreadsheet' });;
   }
 }
 
@@ -91,6 +92,25 @@ const updateLibrary = async(_req, res) => {
   }
 }
 
+const filterLibrary = async (_req, res) => {
+  try {
+    const { type, item } = _req.body; 
+
+    const { sheets } = await authentication();
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: 'LibraryCatalogue',
+    });
+
+    const filteredData = filterLibraryData(response.data, type, item);
+    return res.send(filteredData);
+  } catch (err) {
+    console.log('ERROR FILTERING THE LIBRARY: ', err);
+    res.status(500).send(err);
+  }
+}
+
+
 const readLibrary = async (_req, res) => {
   try {
     const { sheets } = await authentication();
@@ -98,7 +118,7 @@ const readLibrary = async (_req, res) => {
       spreadsheetId: SHEET_ID,
       range: 'LibraryCatalogue',
     })
-    const cleanedData = cleanLibraryData(response.data)
+    const cleanedData = cleanLibraryData(response.data);
     return res.send(cleanedData);
   } catch (err) {
     return res.status(500).send(err);
@@ -139,5 +159,6 @@ module.exports = {
   writeLibrary,
   readLibrary,
   updateLibrary,
-  readPicker
+  readPicker,
+  filterLibrary
 }
