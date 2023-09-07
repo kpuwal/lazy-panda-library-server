@@ -94,7 +94,7 @@ const updateLibrary = async(_req, res) => {
 
 const filterLibrary = async (_req, res) => {
   try {
-    const { type, item } = _req.body; 
+    const { type, item } = _req.body.filter; 
 
     const { sheets } = await authentication();
     const response = await sheets.spreadsheets.values.get({
