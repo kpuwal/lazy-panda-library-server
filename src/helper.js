@@ -1,3 +1,19 @@
+const templateKeys = [
+  'title',
+  'author',
+  'language',
+  'publishedDate',
+  'pageCount',
+  'genre',
+  'series',
+  'world',
+  'readBy',
+  'boughtGivenOn',
+  'givenBy',
+  'lastReadByJowie',
+  'lastReadByKasia'
+];
+
 function lowerCaseAllWordsExceptFirstLetters(string) {
   return string.replace(/\S*/g, function (word) {
       return word.charAt(0) + word.slice(1).toLowerCase();
@@ -49,24 +65,7 @@ const cleanPickerData = (data) => {
   };
 }
 
-
-const templateKeys = [
-  'title',
-  'author',
-  'language',
-  'publishedDate',
-  'pageCount',
-  'genre',
-  'series',
-  'world',
-  'readBy',
-  'boughtGivenOn',
-  'givenBy',
-  'lastReadByJowie',
-  'lastReadByKasia'
-];
-
-const cleanLibraryData = (data) => {
+const cleanLibraryData = (data, shouldSlice) => {
   const apiData = data.values;
   const dataArray = apiData.slice(1);
   const mappedObjects = dataArray.map(dataArrayItem => {
@@ -78,6 +77,11 @@ const cleanLibraryData = (data) => {
   });
   return mappedObjects;
 }
+
+const filterLibraryData = (data, type, item) => {
+  const cleanedData = cleanLibraryData(data);
+  return cleanedData.filter(itemObj => itemObj[type] === item);
+};
 
 async function findRowIndexByTitle(sheets, sheetId, title) {
   const response = await sheets.spreadsheets.values.get({
@@ -95,5 +99,6 @@ module.exports = {
   cleanData,
   cleanPickerData,
   cleanLibraryData,
-  findRowIndexByTitle
+  findRowIndexByTitle,
+  filterLibraryData
 }
