@@ -63,10 +63,11 @@ const updateLibrary = async(_req, res) => {
       givenBy,
       lastReadByJowie,
       lastReadByKasia,
+      bookTitleForRowUpdate
     } = _req.body;
 
     const { sheets } = await authentication();
-    const rowIndex = await findRowIndexByTitle(sheets, SHEET_ID,  title);
+    const rowIndex = await findRowIndexByTitle(sheets, SHEET_ID,  bookTitleForRowUpdate);
 
     if (rowIndex !== -1) {
       const updatedRowData = [ title, author, language, publishedDate, pageCount, genre, series, world, readBy, boughtGivenOn, givenBy, lastReadByJowie, lastReadByKasia ];
