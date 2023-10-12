@@ -37,7 +37,7 @@ const writeLibrary = async (_req, res) => {
     })
 
     if (writeReq.status === 200) {
-      return res.json({msg: 'Spreadsheet updated successfully!'})
+      return res.json({msg: `Ta-da! 🎉 Another literary gem saved to your collection! 📚 Happy reading! 🚀✨`})
     }
 
     return res.json({msg: 'Something went wrong while updating the spreadsheet'})
@@ -82,7 +82,7 @@ const updateLibrary = async(_req, res) => {
       });
 
       if (writeReq.status === 200) {
-        return res.json({ msg: 'Spreadsheet row updated successfully!' });
+        return res.json({ msg: `Drumroll, please! 🥁✨ Spreadsheet row updated successfully! Your data just got a makeover.`});
       }
     }
     return res.json({ msg: 'Row not found or something went wrong while updating the spreadsheet' });
