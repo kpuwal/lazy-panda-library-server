@@ -72,7 +72,7 @@ const updateLibrary = async(_req, res) => {
     if (rowIndex !== -1) {
       const updatedRowData = [ title, author, language, publishedDate, pageCount, genre, series, world, readBy, boughtGivenOn, givenBy, lastReadByJowie, lastReadByKasia ];
 
-      const writeReq = await sheets.spreadsheets.values.update({
+      const writeReq = sheets.spreadsheets.values.update({
         spreadsheetId: SHEET_ID,
         range: `LibraryCatalogue!A${rowIndex + 1}:M${rowIndex + 1}`,
         valueInputOption: 'USER_ENTERED',
