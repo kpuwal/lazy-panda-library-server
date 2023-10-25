@@ -1,11 +1,19 @@
 require('dotenv').config();
 const { google } = require('googleapis');
 const { cleanPickerData, cleanLibraryData, findRowIndexByTitle, filterLibraryData } = require('./helper.js');
+const {savedToPandaLibraryMessages, updatedPandaLibraryMessages, errorUpdatingSpreadsheetMessages, errorSavingToLibraryMessages} = require('./constants.js');
+
+function getRandomMessage(messagesArray) {
+  const randomIndex = Math.floor(Math.random() * messagesArray.length);
+  return messagesArray[randomIndex];
+}
 
 const SHEET_ID = process.env.GOOGLE_API_SHEET_ID;
 const PICKER_SHEET_ID = process.env.GOOGLE_API_PICKER_SHEET_ID;
 
 const writeLibrary = async (_req, res) => {
+  const randomSavedToPandaLibraryMessage = getRandomMessage(savedToPandaLibraryMessages);
+  const randomErrorSavingToLibraryMessage = getRandomMessage(errorSavingToLibraryMessages);
   try {
     const {
       title,
@@ -37,17 +45,19 @@ const writeLibrary = async (_req, res) => {
     })
 
     if (writeReq.status === 200) {
-      return res.json({msg: `Ta-da! 🎉 Another literary gem saved to your collection! 📚 Happy reading! 🚀✨`})
+      return res.json({msg: randomSavedToPandaLibraryMessage})
     }
 
-    return res.json({msg: 'Something went wrong while updating the spreadsheet'})
+    return res.json({msg: randomErrorSavingToLibraryMessage})
   } catch (err) {
-    console.log('ERROR UPDATING THE SHEET: ', err);
-    res.status(500).json({ error: 'Something went wrong while updating the spreadsheet' });;
+    console.log('ERROR saving to SHEET: ', err);
+    res.status(500).json({ error: 'Something went wrong while saving to spreadsheet' });;
   }
 }
 
 const updateLibrary = async(_req, res) => {
+  const randomUpdatedPandaLibraryMessage = getRandomMessage(updatedPandaLibraryMessages);
+  const randomErrorUpdatingSpreadsheetMessage = getRandomMessage(errorUpdatingSpreadsheetMessages);
   try {
     const {
       title,
@@ -72,7 +82,7 @@ const updateLibrary = async(_req, res) => {
     if (rowIndex !== -1) {
       const updatedRowData = [ title, author, language, publishedDate, pageCount, genre, series, world, readBy, boughtGivenOn, givenBy, lastReadByJowie, lastReadByKasia ];
 
-      const writeReq = sheets.spreadsheets.values.update({
+      const writeReq = await sheets.spreadsheets.values.update({
         spreadsheetId: SHEET_ID,
         range: `LibraryCatalogue!A${rowIndex + 1}:M${rowIndex + 1}`,
         valueInputOption: 'USER_ENTERED',
@@ -82,10 +92,10 @@ const updateLibrary = async(_req, res) => {
       });
 
       if (writeReq.status === 200) {
-        return res.json({ msg: `Drumroll, please! 🥁✨ Spreadsheet row updated successfully! Your data just got a makeover.`});
+        return res.json({msg: randomUpdatedPandaLibraryMessage});
       }
     }
-    return res.json({ msg: 'Row not found or something went wrong while updating the spreadsheet' });
+    return res.json({msg: randomErrorUpdatingSpreadsheetMessage});
 
   } catch (err) {
     console.log('ERROR UPDATING THE SHEET: ', err);
