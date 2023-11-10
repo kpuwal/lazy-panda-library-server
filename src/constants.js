@@ -1,17 +1,17 @@
 const savedToPandaLibraryMessages = [
-  "🐼 A new adventure awaits! Your book is safely stored in the Panda Library. 📚",
-  "🐼 Your book is now a part of our bamboo-filled world! Find it in the Panda Library. 📖🌿",
-  "🐼 Another book finds a home in the Panda Library. Your collection is growing! 📚🐾",
-  "🐼 It's a panda party! Your book is in the Panda Library. Let's keep the stories going! 🎉📚",
-  "🐼 Your book now resides in the Panda Library, waiting to be explored. Enjoy the reading journey! 🐼📖",
+  "A new adventure awaits! Your book is safely stored in the Panda Library. 📚",
+  "Your book is now a part of our bamboo-filled world! Find it in the Panda Library. 📖🌿",
+  "Another book finds a home in the Panda Library. Your collection is growing! 📚🐾",
+  "It's a panda party! Your book is in the Panda Library. Let's keep the stories going! 🎉📚",
+  "Your book now resides in the Panda Library, waiting to be explored. Enjoy the reading journey! 🐼📖",
 ];
 
 const updatedPandaLibraryMessages = [
-  "🐼 A book has been polished and updated in the Panda Library. It's better than ever! 📚✨",
-  "🐼 Your book just got a makeover! Check out the refreshed version in the Panda Library. 📖💅",
-  "🐼 Updates are in! Your book now shines brighter in the Panda Library. Enjoy the enhanced reading experience! 📚💫",
-  "🐼 It's like magic! Your book has been updated and is ready to surprise you in the Panda Library. ✨📖",
-  "🐼 Exciting news! Your book has been spruced up in the Panda Library. Rediscover it today! 🎉📚",
+  "A book has been polished and updated in the Panda Library. It's better than ever! 📚✨",
+  "Your book just got a makeover! Check out the refreshed version in the Panda Library. 📖💅",
+  "Updates are in! Your book now shines brighter in the Panda Library. Enjoy the enhanced reading experience! 📚💫",
+  "It's like magic! Your book has been updated and is ready to surprise you in the Panda Library. ✨📖",
+  "Exciting news! Your book has been spruced up in the Panda Library. Rediscover it today! 🎉📚",
 ];
 
 const errorUpdatingSpreadsheetMessages = [
