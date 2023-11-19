@@ -152,51 +152,6 @@ const readPicker = async (_req, res) => {
   }
 }
 
-// const updatePicker = async (_req, res) => {
-//   try {
-//     const { columnName, data } = _req.body;
-
-//     const { sheets } = await authentication();
-//     const sheetValues = await sheets.spreadsheets.values.get({
-//       spreadsheetId: PICKER_SHEET_ID,
-//       range: 'Output',
-//       majorDimension: 'ROWS',
-//     });
-
-//     const headers = sheetValues.data.values[0] || [];
-//     let targetColumnIndex = headers.findIndex(title => !title); // Find first empty column
-
-//     if (targetColumnIndex === -1) {
-//       targetColumnIndex = headers.length; // If no empty column is found, append a new column
-//     }
-
-//     // Update the title in the first row
-//     await sheets.spreadsheets.values.update({
-//       spreadsheetId: PICKER_SHEET_ID,
-//       range: `Output!${String.fromCharCode(targetColumnIndex + 65)}1`,
-//       valueInputOption: 'RAW',
-//       resource: {
-//         values: [[columnName]],
-//       },
-//     });
-
-//     // Update the target cell in the specified column
-//     await sheets.spreadsheets.values.update({
-//       spreadsheetId: PICKER_SHEET_ID,
-//       range: `Output!${String.fromCharCode(targetColumnIndex + 65)}2`,
-//       valueInputOption: 'RAW',
-//       resource: {
-//         values: data.map(value => [value]),
-//       },
-//     });
-
-//     return res.json({ msg: 'Data appended successfully' });
-//   } catch (err) {
-//     console.log('ERROR UPDATING PICKER SHEET: ', err);
-//     res.status(500).send(err);
-//   }
-// };
-
 const updatePicker = async (_req, res) => {
   try {
     const { columnName, data } = _req.body;
@@ -215,7 +170,6 @@ const updatePicker = async (_req, res) => {
       // Column doesn't exist, create a new column
       targetColumnIndex = headers.length;
 
-      // Update the title in the first row
       await sheets.spreadsheets.values.update({
         spreadsheetId: PICKER_SHEET_ID,
         range: `Output!${String.fromCharCode(targetColumnIndex + 65)}1`,
