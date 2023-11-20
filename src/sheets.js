@@ -163,7 +163,7 @@ const readTags = async (_req, res) => {
 
     });
     const cleanedData = organizeTagsData(response.data.values);
-    return res.send(cleanedData);
+    return res.send({ tags: cleanedData });
   } catch (err) {
     return res.status(500).send(err);
   }
