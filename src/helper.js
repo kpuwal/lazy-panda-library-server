@@ -95,10 +95,24 @@ async function findRowIndexByTitle(sheets, sheetId, title) {
   return rowIndex;
 }
 
+const organizeTagsData = (data) => {
+  const result = [];
+
+  for (const array of data) {
+    const title = array[0];
+    const labels = array.slice(1);
+    result.push({ title, labels });
+  }
+
+  return result;
+};
+
+
 module.exports = {
   cleanData,
   cleanPickerData,
   cleanLibraryData,
   findRowIndexByTitle,
-  filterLibraryData
+  filterLibraryData,
+  organizeTagsData
 }
