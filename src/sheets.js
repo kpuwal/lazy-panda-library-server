@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { google } = require('googleapis');
-const { cleanPickerData, cleanLibraryData, findRowIndexByTitle, filterLibraryData } = require('./helper.js');
+const { cleanPickerData, cleanLibraryData, findRowIndexByTitle, filterLibraryData, organizeTagsData } = require('./helper.js');
 const {savedToPandaLibraryMessages, updatedPandaLibraryMessages, errorUpdatingSpreadsheetMessages, errorSavingToLibraryMessages} = require('./constants.js');
 
 function getRandomMessage(messagesArray) {
@@ -145,7 +145,24 @@ const readPicker = async (_req, res) => {
       majorDimension: 'COLUMNS'
 
     });
+    console.log('tags: ', response.data)
     const cleanedData = cleanPickerData(response.data);
+    return res.send(cleanedData);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+}
+
+const readTags = async (_req, res) => {
+  try {
+    const { sheets } = await authentication();
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: PICKER_SHEET_ID,
+      range: 'Output',
+      majorDimension: 'COLUMNS'
+
+    });
+    const cleanedData = organizeTagsData(response.data.values);
     return res.send(cleanedData);
   } catch (err) {
     return res.status(500).send(err);
@@ -224,5 +241,6 @@ module.exports = {
   updateLibrary,
   readPicker,
   filterLibrary,
-  updatePicker
+  updatePicker,
+  readTags
 }
