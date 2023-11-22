@@ -180,8 +180,8 @@ const updateTags = async (_req, res) => {
     });
 
     const values = tags.reduce((acc, column) => {
-      const { title, labels } = column;
-      acc.push([title, '', ...labels]);
+      const { title, image, labels } = column;
+      acc.push([title, image, ...labels]);
       return acc;
     }, []);
 
