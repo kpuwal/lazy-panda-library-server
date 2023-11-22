@@ -171,9 +171,9 @@ const readTags = async (_req, res) => {
 
 const updateTags = async (_req, res) => {
   try {
-    const { data } = _req.body;
+    const { tags } = _req.body;
     const { sheets } = await authentication();
-
+console.log('data ', tags)
     // Clear the entire sheet
     await sheets.spreadsheets.values.clear({
       spreadsheetId: PICKER_SHEET_ID,
@@ -181,7 +181,7 @@ const updateTags = async (_req, res) => {
     });
 
     // Extract titles and labels
-    const values = data.reduce((acc, column) => {
+    const values = tags.reduce((acc, column) => {
       const { title, labels } = column;
       acc.push([title, '', ...labels]);
       return acc;
