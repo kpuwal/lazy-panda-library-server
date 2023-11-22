@@ -173,14 +173,12 @@ const updateTags = async (_req, res) => {
   try {
     const { tags } = _req.body;
     const { sheets } = await authentication();
-console.log('data ', tags)
-    // Clear the entire sheet
+
     await sheets.spreadsheets.values.clear({
       spreadsheetId: PICKER_SHEET_ID,
       range: 'Output',
     });
 
-    // Extract titles and labels
     const values = tags.reduce((acc, column) => {
       const { title, labels } = column;
       acc.push([title, '', ...labels]);
@@ -190,7 +188,6 @@ console.log('data ', tags)
     // Transpose the array to get titles in separate columns
     const transposedValues = values[0].map((_, colIndex) => values.map(row => row[colIndex]));
 
-    // Update the sheet
     await sheets.spreadsheets.values.update({
       spreadsheetId: PICKER_SHEET_ID,
       range: 'Output!A1',
@@ -206,60 +203,6 @@ console.log('data ', tags)
     res.status(500).send(err);
   }
 };
-
-
-
-// const updatePicker = async (_req, res) => {
-//   try {
-//     const { columnName, data } = _req.body;
-
-//     const { sheets } = await authentication();
-//     const sheetValues = await sheets.spreadsheets.values.get({
-//       spreadsheetId: PICKER_SHEET_ID,
-//       range: 'Output',
-//       majorDimension: 'ROWS',
-//     });
-
-//     const headers = sheetValues.data.values[0] || [];
-//     let targetColumnIndex = headers.indexOf(columnName);
-
-//     if (targetColumnIndex === -1) {
-//       // Column doesn't exist, create a new column
-//       targetColumnIndex = headers.length;
-
-//       await sheets.spreadsheets.values.update({
-//         spreadsheetId: PICKER_SHEET_ID,
-//         range: `Output!${String.fromCharCode(targetColumnIndex + 65)}1`,
-//         valueInputOption: 'RAW',
-//         resource: {
-//           values: [[columnName]],
-//         },
-//       });
-//     }
-
-//     // Clear the entire column starting from row 2
-//     await sheets.spreadsheets.values.clear({
-//       spreadsheetId: PICKER_SHEET_ID,
-//       range: `Output!${String.fromCharCode(targetColumnIndex + 65)}2:${String.fromCharCode(targetColumnIndex + 65)}`,
-//     });
-
-//     // Update the target column with new data starting from row 2
-//     await sheets.spreadsheets.values.update({
-//       spreadsheetId: PICKER_SHEET_ID,
-//       range: `Output!${String.fromCharCode(targetColumnIndex + 65)}2`,
-//       valueInputOption: 'RAW',
-//       resource: {
-//         values: data.map(value => [value]),
-//       },
-//     });
-
-//     return res.json({ msg: 'Column updated/appended successfully' });
-//   } catch (err) {
-//     console.log('ERROR UPDATING PICKER SHEET: ', err);
-//     res.status(500).send(err);
-//   }
-// };
-
 
 const authentication = async () => {
   const auth = new google.auth.GoogleAuth({
@@ -281,7 +224,6 @@ module.exports = {
   updateLibrary,
   readPicker,
   filterLibrary,
-  // updatePicker,
   readTags,
   updateTags
 }

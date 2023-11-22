@@ -8,7 +8,6 @@ const {
   readLibrary,
   updateLibrary,
   readPicker,
-  // updatePicker,
   filterLibrary,
   readTags,
   updateTags
@@ -27,10 +26,8 @@ router.get('/api/library', auth, readLibrary);
 router.get('/api/picker', auth, readPicker);
 router.get('/api/tags', auth, readTags);
 router.post('/api/update-tags', auth, updateTags);
-
 router.post('/api/update-library', auth, updateLibrary);
 router.post('/api/filter-library', auth, filterLibrary);
-// router.post('/api/update-picker', auth, updatePicker);
 router.post('/api/process-picture', auth, upload.single("image"), processPicture);
 
 module.exports = router;
