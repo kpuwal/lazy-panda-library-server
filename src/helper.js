@@ -99,8 +99,9 @@ const organizeTagsData = (data) => {
   const result = [];
 
   for (const array of data) {
-    const title = array.title;
-    const [image, ...labels] = array.labels;
+    const title = array[0];
+    const image = array[1];
+    const labels = array.slice(2);
     result.push({ title, image, labels });
   }
 
