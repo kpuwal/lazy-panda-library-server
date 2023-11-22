@@ -162,6 +162,7 @@ const readTags = async (_req, res) => {
       majorDimension: 'COLUMNS'
 
     });
+
     const cleanedData = organizeTagsData(response.data.values);
     return res.send({ tags: cleanedData });
   } catch (err) {
