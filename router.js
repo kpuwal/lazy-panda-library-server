@@ -10,7 +10,8 @@ const {
   readPicker,
   filterLibrary,
   readTags,
-  updateTags
+  updateTags,
+  readCategories
 } = require('./src/sheets');
 const { processPicture } = require('./src/tesseract'); 
 
@@ -26,6 +27,7 @@ router.get('/api/library', auth, readLibrary);
 router.get('/api/picker', auth, readPicker);
 router.get('/api/tags', auth, readTags);
 router.post('/api/update-tags', auth, updateTags);
+router.get('/api/categories', auth, readCategories);
 router.post('/api/update-library', auth, updateLibrary);
 router.post('/api/filter-library', auth, filterLibrary);
 router.post('/api/process-picture', auth, upload.single("image"), processPicture);
