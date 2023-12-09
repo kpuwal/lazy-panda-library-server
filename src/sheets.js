@@ -205,6 +205,23 @@ const updateTags = async (_req, res) => {
   }
 };
 
+const readCategories = async (_req, res) => {
+  try {
+    const { sheets } = await authentication();
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: 'LibraryCatalogue!1:1',
+    });
+
+    const columnTitles = response.data.values[0];
+    return res.send({ categories: columnTitles });
+  } catch (err) {
+    console.error('ERROR READING CATEGORIES: ', err);
+    return res.status(500).send(err);
+  }
+};
+
+
 const authentication = async () => {
   const auth = new google.auth.GoogleAuth({
     keyFile: './google-credentials.json',
@@ -226,5 +243,6 @@ module.exports = {
   readPicker,
   filterLibrary,
   readTags,
-  updateTags
+  updateTags,
+  readCategories
 }
